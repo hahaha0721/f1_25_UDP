@@ -8,11 +8,8 @@
 f125/
 ├── batch_parse.py          # 批量解析二进制 UDP 包 → NDJSON
 ├── udp_receiver.py         # 实时接收 UDP 包并保存为 .bin
-├── udp_sender.py           # 模拟遥测数据发送器（JSON 格式，非官方协议）
-├── information.ndjson      # udp_sender 产生的示例 JSON 数据
-├── packets/
-│   └── samples/            # 每种包类型的二进制样本（官方协议）
-└── SKILL.md                # Claude Code skill
+└── packets/
+    └── samples/            # 每种包类型的二进制样本（官方协议）
 ```
 
 ## 快速开始
@@ -29,12 +26,6 @@ python3 batch_parse.py
 ```bash
 python3 udp_receiver.py
 # 监听 0.0.0.0:20777，每个包保存为 packets/<timestamp>_<port>.bin
-```
-
-### 测试数据生成
-
-```bash
-python3 udp_sender.py --laps 3 --interval 0.1
 ```
 
 ## 数据包类型

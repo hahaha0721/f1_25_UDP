@@ -1,0 +1,14 @@
+# Python virtual environment
+.venv/
+
+# Python cache
+__pycache__/
+
+# Copyrighted spec PDF (EA/Codemasters)
+Data Output from F1 25 v3.pdf
+
+# Captured raw packets (too large, see packets/samples/ for examples)
+packets/*.bin
+
+# Parsed output (too large, regenerate with batch_parse.py)
+parsed_packets.ndjson

@@ -76,12 +76,13 @@ def dec_motion(d):
 
 def dec_session(d):
     h = parse_header(d); off = 29
-    # Skip tag (4 bytes) — already part of the 29-byte header in our scheme
-    # Actually the tag at offset 29 is part of the body, not the header
-    off += 4  # skip tag bytes
 
     # First block: weather + session info (18 bytes)
-    v = struct.unpack("<bb B H B b B B H H B B B B B", d[off:off+18]); off += 18
+    # uint8 weather, int8 track_temp, int8 air_temp, uint8 total_laps,
+    # uint16 track_length, uint8 session_type, int8 track_id, uint8 formula,
+    # uint16 session_time_left, uint16 session_duration,
+    # uint8 pit_speed_limit, game_paused, is_spectating, spectator_car_index, sli_pro
+    v = struct.unpack("<B b b B H B b B H H B B B B B", d[off:off+18]); off += 18
 
     # Marshal zones (21 × 5 bytes)
     marshal = []

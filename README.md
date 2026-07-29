@@ -8,6 +8,11 @@
 f125/
 ├── batch_parse.py          # 批量解析二进制 UDP 包 → NDJSON
 ├── udp_receiver.py         # 实时接收 UDP 包并保存为 .bin
+├── classified/             # 按类型分类后的数据（从 parsed_packets.ndjson 拆分）
+│   ├── 00_motion.ndjson
+│   ├── 01_session.ndjson
+│   ├── ...
+│   └── 15_lap_positions.ndjson
 └── packets/
     └── samples/            # 每种包类型的二进制样本（官方协议）
 ```

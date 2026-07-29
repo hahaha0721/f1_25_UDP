@@ -12,6 +12,7 @@ packets/*.bin
 
 # Parsed output (too large, regenerate with batch_parse.py)
 parsed_packets.ndjson
+classified/
 
 # Local-only utilities (not part of the core parser)
 udp_sender.py

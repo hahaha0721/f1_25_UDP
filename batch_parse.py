@@ -203,21 +203,20 @@ def dec_participants(d):
     h = parse_header(d); off = 29
     num = d[off]; off += 1; parts = []
     for i in range(MAX_CARS):
-        name_raw = d[off:off+32]
-        npos = name_raw.find(b'\x00')
-        name = name_raw[:npos].decode("utf-8","replace") if npos>=0 else name_raw.decode("utf-8","replace")
-        v = struct.unpack("<BBBBBBB B B H B B", d[off+32:off+45])
-        ncol = v[9]; cols = []
-        for c in range(4):
-            if c < ncol:
-                rgb = d[off+45+c*3:off+48+c*3]
-                if len(rgb)==3: cols.append({"r":rgb[0],"g":rgb[1],"b":rgb[2]})
+        # F1 25 v3: 7 flags + name[32] + your_telemetry + show_online_names
+        # + tech_level(u16) + platform + num_colours + 4x LiveryColour = 57 bytes
+        v = struct.unpack("<BBBBBBB32sBBHBB12B", d[off:off+57])
+        name = v[7].split(b"\x00")[0].decode("utf-8","replace")
+        cols = []
+        for c in range(min(v[12], 4)):
+            rgb = v[13+c*3:16+c*3]
+            cols.append({"r":rgb[0],"g":rgb[1],"b":rgb[2]})
         parts.append({"car_index":i,"ai_controlled":v[0],"driver_id":v[1],"network_id":v[2],
             "team_id":v[3],"team_name":TEAMS.get(v[3],f"Unknown({v[3]})"),
             "my_team":v[4],"race_number":v[5],"nationality":v[6],"name":name,
-            "your_telemetry":v[7],"show_online_names":v[8],"tech_level":v[9],
-            "platform":v[10],"livery_colours":cols})
-        off += 45 + 12
+            "your_telemetry":v[8],"show_online_names":v[9],"tech_level":v[10],
+            "platform":v[11],"livery_colours":cols})
+        off += 57
     return {"header":h,"num_active_cars":num,"participants":parts}
 
 def dec_setups(d):
